@@ -11,8 +11,17 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron';
+import {
+  app,
+  BrowserWindow,
+  shell,
+  ipcMain,
+  ipcRenderer,
+  dialog,
+  Notification,
+} from 'electron';
 import { autoUpdater } from 'electron-updater';
+import fs from 'fs';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
@@ -27,15 +36,38 @@ export default class AppUpdater {
 
 let mainWindow: BrowserWindow | null = null;
 
+const filename = `${app.getPath('userData')}/content.txt`;
+
+const loadContent = async () => {
+  return fs.existsSync(filename) ? fs.readFileSync(filename, 'utf-8') : '';
+};
+
+const saveContent = async (content: any) => {
+  fs.writeFileSync(filename, content, 'utf-8');
+};
+
+ipcMain.on('saveContent', (e, content) => {
+  saveContent(content);
+});
+
+ipcMain.handle('loadContent', (e) => {
+  return loadContent();
+});
+
+const openFile = async (event) => {
+  const files = await dialog.showOpenDialog({ properties: ['openFile'] });
+  const file = files.filePaths[0];
+  const content = fs.existsSync(file) ? fs.readFileSync(file, 'utf-8') : '';
+  event.sender.send('file:loaded', content);
+};
+
+ipcMain.on('openFile', (event) => {
+  openFile(event);
+});
+
 ipcMain.on('ipc-example', async (event, arg) => {
   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
   console.log(msgTemplate(arg));
-  await dialog.showMessageBox(mainWindow, {
-    message: 'hello',
-    buttons: ['ok'],
-    type: 'info',
-    title: 'from electron',
-  });
   event.reply('ipc-example', msgTemplate('pong'));
 });
 

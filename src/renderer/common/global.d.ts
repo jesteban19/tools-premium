@@ -2,6 +2,9 @@ declare let window: Window;
 export interface IElectron {
   ipcRenderer: {
     myPing(): void;
+    saveContent(content: any): void;
+    loadContent(): any;
+    openFile(): void;
     once(channel: any, func: any): void;
     getDrivesOnce(channel: any, func: any): void;
     getDrives(): void;

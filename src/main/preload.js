@@ -9,7 +9,7 @@ contextBridge.exposeInMainWorld('electron', {
     loadContent: ipcRenderer.invoke('loadContent'),
     openFile: () => ipcRenderer.send('openFile'),
     on(channel, func) {
-      const validChannels = ['ipc-example', 'file:loaded'];
+      const validChannels = ['ipc-example', 'file:loaded', 'file:save'];
       if (validChannels.includes(channel)) {
         // Deliberately strip event as it includes `sender`
         ipcRenderer.on(channel, (event, ...args) => func(...args));

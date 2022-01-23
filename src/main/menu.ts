@@ -208,6 +208,13 @@ export default class MenuBuilder {
               this.mainWindow.close();
             },
           },
+          {
+            label: '&Save File',
+            accelerator: 'Ctrl+S',
+            click: () => {
+              this.mainWindow.webContents.send('file:save');
+            },
+          },
         ],
       },
       {

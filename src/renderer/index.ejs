@@ -9,13 +9,6 @@
     <title>Hello Electron React!</title>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="app"></div>
   </body>
-  <script>
-    window.electron.ipcRenderer.once('ipc-example', (arg) => {
-      console.log(arg);
-    });
-
-    window.electron.ipcRenderer.myPing();
-  </script>
 </html>

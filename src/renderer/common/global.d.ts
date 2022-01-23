@@ -3,7 +3,7 @@ export interface IElectron {
   ipcRenderer: {
     myPing(): void;
     saveContent(content: any): void;
-    loadContent(): any;
+    loadContent: Promise<any>;
     openFile(): void;
     once(channel: any, func: any): void;
     getDrivesOnce(channel: any, func: any): void;

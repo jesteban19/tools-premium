@@ -5,8 +5,8 @@ import Framework7 from 'framework7/lite-bundle';
 import Framework7React from 'framework7-react';
 import 'framework7-icons';
 
-import AppHome from './App';
+import AppCore from './App';
 
 Framework7.use(Framework7React);
 
-render(<AppHome />, document.getElementById('app'));
+render(<AppCore />, document.getElementById('app'));
